@@ -14,8 +14,6 @@ return Application::configure(basePath: dirname(__DIR__))
         // menambahkan alias untuk mendefinisikan middleware
         $middleware->alias([
             'isMember' => App\Http\Middleware\CheckMembership::class, // key => value
-        ]);
-        $middleware->alias([
             'isAuth' => App\Http\Middleware\IsAuth::class,
         ]);
 

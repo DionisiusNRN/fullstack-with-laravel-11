@@ -1,0 +1,151 @@
+home.blade.php
+ini hanya catatan aja!
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Home</title>
+        {{-- <script src="https://unpkg.com/@tailwindcss/browser@4"></script> --}}
+    </head>
+    <body>
+        <ul>
+            <?php foreach($menu as $key => $value): ?>
+                <li><a href="<?= $value ?>"><?= $key ?></a></li>
+            <?php endforeach; ?>
+        </ul>
+        <h1>Home Page</h1>
+
+        <ul>
+            {{-- @for ($index = 0; $index < count($movies); $index++)
+                <li>{{ $movies[$index]['title'] }} - {{ $movies[$index]['year'] }}</li>
+            @endfor --}}
+
+            {{-- @foreach ($movies as $movie)
+                <li>{{ $movie['title'] }} - {{ $movie['year'] }}</li>
+            @endforeach --}}
+
+            {{-- @forelse ($movies as $movie)
+                <li>{{ $movie['title'] }} - {{ $movie['year'] }}</li>
+            @empty
+                <li>No Movies found.</li>
+            @endforelse --}}
+
+            {{-- @php
+                $index = 0;
+            @endphp
+
+            @while ($index < count($movies))
+                <li>{{ $movies[$index]['title'] }} - {{ $movies[$index]['year'] }}</li>
+                @php
+                    $index++;
+                @endphp
+            @endwhile --}}
+        </ul>
+        @foreach ($movies as $movie)
+            @include('partials._movie', ['movie' => $movie])
+        @endforeach
+
+
+    </body>
+</html>
+
+{{--
+// cara blade menampilkan data
+{{ $name }} // menampilkan plain text
+{!! $name !!} // menampilkan text HTML, tapi harus hati hati karena bisa di injection
+
+// Kondisi if
+@if ($user['role'] == 'admin')
+<li>Role: Administrator</li>
+@elseif ($user['role'] == 'user')
+<li>Role: User</li>
+@else
+<li>Role: Unknown</li>
+@endif
+
+// kondisi ternary if
+<li>Role: {{ $user['admin'] == 'admin' ? 'Administrator' : ($user['user'] == 'user' ? 'User' : ' Unknown') }}</li> // tidak disarankan
+<li>Role: {{ $user['admin'] == 'admin' ? 'Administrator' : 'User' }}</li> // lebih disarankan, hanya ada kondisi if dan else
+
+// Switch statement
+@switch($movieCategory)
+    @case('action')
+        <h4>Action Movie</h4>
+    @break
+
+    @case('comedy')
+        <h4>Comedy Movie</h4>
+    @break
+
+    @case('drama')
+        <h4>Drama Movie</h4>
+    @break
+    @default
+        <h4>Other Movies</h4>
+@endswitch
+
+// Looping
+// for
+@for ($index = 0; $index < count($movies); $index++) // count: untuk mendapatkan total angka atau jumlah
+    <li>{{ $movies[$index]['title'] }} - {{ $movies[$index]['year'] }}</li>
+@endfor
+// foreach (kalau movie nggak ada maka akan kosong)
+@foreach ($movies as $movie)
+    <li>{{ $movie['title'] }} - {{ $movie['year'] }}</li>
+@endforeach
+// forelse
+// (memberikan kondisi switch pada perulangan. kalau movie nggak ada ya nggak kosong) memungkinkan tidak perlu menggunakan pengkondisian
+@forelse ($movies as $movie)
+    <li>{{ $movie['title'] }} - {{ $movie['year'] }}</li>
+@empty
+    <li>No Movies found.</li>
+@endforelse
+// while
+@while ($index < count($movies))
+    <li>{{ $movies[$index]['title'] }} - {{ $movies[$index]['year'] }}</li>
+    @php
+        $index++;
+    @endphp
+@endwhile
+
+// Penerapa Continue dan Break di perulangan (continue dan break nggak harus digabung)
+@foreach ($movies as $movie)
+    @if ($movie['year'] < 2000)
+        @break
+    @endif
+
+    @if ($movie['year'] > 2014)
+        @break
+    @endif
+    <li>{{ $movie['title'] }} - {{ $movie['year'] }}</li>
+@endforeach
+
+// variabel bawaan dari blade untuk perulangan
+@foreach ($movies as $movie)
+    <p>{{ $loop->iteration }}. {{ $movie['title'] }} - {{ $movie['year'] }}</p> // contoh 1
+    @if ($loop->first) // contoh 2
+        <p>First Movie: {{ $movie['title'] }} - {{ $movie['year'] }}</p>
+    @elseif ($loop->last)
+        <p>Last Movie: {{ $movie['title'] }} - {{ $movie['year'] }}</p>
+    @else
+        <p>{{ $movie['title'] }} - {{ $movie['year'] }}</p>
+    @endif
+    <p>Movie {{ $loop->iteration }} of {{ $loop->count }}: {{ $movie['title'] }} - {{ $movie['year'] }}</p> // contoh 3
+    <p>Movie {{ $loop->remaining }} of {{ $loop->count }}: {{ $movie['title'] }} - {{ $movie['year'] }}</p> // contoh 4
+@endforeach
+
+// dapat memberikan kondisi pada attribut html
+// contohnya pakai ternary dan tailwindcss
+@foreach ($movies as $movie)
+    <p class="{{ $loop->first ? 'font-bold' : ($loop->last ? 'italic' : '') }}">
+        {{ $movie['title'] }} - {{ $movie['year'] }}
+    </p>
+@endforeach
+
+// ketika butuh partial datanya di lain file, pakai include
+@foreach ($movies as $movie)
+    @include('partials-movie', ['movie' => $movie]) // ['diambil dari variabel _movie.blade.php', diambil dari variabel $movie foreach ini]
+@endforeach
+--}}
